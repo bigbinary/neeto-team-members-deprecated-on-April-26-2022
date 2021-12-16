@@ -2,9 +2,9 @@
   "name": "@bigbinary/neeto-team-members",
   "version": "1.0.7",
   "description": "Manage neeto Team Members.",
-  "author": "neetoInsights Team",
+  "author": "bigbinary",
   "license": "MIT",
-  "repository": "https://github.com/bigbinary/neeto-team-members-frontend",
+  "repository": "https://github.com/bigbinary/neeto-team-members",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
@@ -13,11 +13,11 @@
   },
   "scripts": {},
   "peerDependencies": {
-    "@bigbinary/neetoui": "^2.0.29",
-    "axios": "^0.21.1",
+    "@bigbinary/neetoui": "^3.0.17",
+    "axios": "^0.24.0",
     "ramda": "^0.27.1",
-    "react": "^16.0.0",
-    "validate.js": "^0.13.1"
+    "yup": "^0.32.11",
+    "formik": "^2.2.9"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
