@@ -13,18 +13,14 @@ npm install --save @bigbinary/neeto-team-members
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-import MyComponent from '@bigbinary/neeto-team-members'
-import '@bigbinary/neeto-team-members/dist/index.css'
+import TeamMembers from "@bigbinary/neeto-team-members";
+import "@bigbinary/neeto-team-members/dist/index.css";
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <TeamMembers />;
   }
 }
 ```
-
-## License
-
-MIT © [mohitharshan123](https://github.com/mohitharshan123)

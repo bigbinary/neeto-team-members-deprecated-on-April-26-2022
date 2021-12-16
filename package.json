@@ -6,7 +6,6 @@
   "license": "MIT",
   "repository": "https://github.com/bigbinary/neeto-team-members",
   "main": "dist/index.js",
-  "source": "src/components/index.js",
   "engines": {
     "node": ">=10"
   },
