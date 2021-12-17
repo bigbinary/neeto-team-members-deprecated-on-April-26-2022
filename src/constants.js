@@ -6,10 +6,7 @@ export const ADD_MEMBER_VALIDATION_SCHEMA = yup.object().shape({
     .trim()
     .required("Email is required")
     .email("Please enter valid email"),
-  role: yup
-    .object()
-    .shape({ label: yup.string(), value: yup.string() })
-    .required(),
+  role: yup.string().required("Please select a role"),
 });
 
 export const MEMBER_FILTER = {
