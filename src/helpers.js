@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Avatar, Dropdown, Typography, Tag } from "@bigbinary/neetoui";
+import { Avatar, Dropdown, Typography, Tag } from "@bigbinary/neetoui/v2";
 import { MenuHorizontal } from "@bigbinary/neeto-icons";
 import { sortWith, descend, prop } from "ramda";
 import classnames from "classnames";
