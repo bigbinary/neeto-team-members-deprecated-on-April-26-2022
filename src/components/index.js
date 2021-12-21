@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 import { Plus } from "@bigbinary/neeto-icons";
 import {
@@ -75,13 +76,24 @@ const TeamMembers = ({
   };
 
   const fetchTeamMembers = async () => {
-    const { data } = await get(getMembersEndpoint);
-    setTeamMembers(data || SAMPLE_DATA);
+    try {
+      setIsLoading(true);
+      const { data } = await get(getMembersEndpoint);
+      setTeamMembers(data || SAMPLE_DATA);
+    } catch (err) {
+      Toastr.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const fetchRoles = async () => {
-    const { data } = await get(getRolesEndpoint);
-    setRoles(data.roles || ROLE_OPTIONS);
+    try {
+      const { data } = await get(getRolesEndpoint);
+      setRoles(data.roles || ROLE_OPTIONS);
+    } catch (err) {
+      Toastr.error(err);
+    }
   };
 
   const handleDeactivateAlertClose = () => {
@@ -163,6 +175,7 @@ const TeamMembers = ({
             defaultPageSize={30}
             rowSelection={null}
             fixedHeight
+            loading={isLoading}
             {...otherTableProps}
           />
         </Scrollable>
@@ -186,6 +199,17 @@ const TeamMembers = ({
       />
     </div>
   );
+};
+
+TeamMembers.propTypes = {
+  metaName: PropTypes.string,
+  getMembersEndpoint: PropTypes.string,
+  addMemberEndpoint: PropTypes.string,
+  updateMemberEndpoint: PropTypes.string,
+  getRolesEndpoint: PropTypes.string,
+  tableProps: PropTypes.shape({
+    additionalColumns: PropTypes.array,
+  }),
 };
 
 export default TeamMembers;

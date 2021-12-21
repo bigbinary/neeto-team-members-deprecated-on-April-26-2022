@@ -1,6 +1,6 @@
 {
   "name": "@bigbinary/neeto-team-members",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Manage neeto Team Members.",
   "author": "BigBinary",
   "license": "MIT",
@@ -41,9 +41,6 @@
   "peerDependencies": {
     "@bigbinary/neeto-icons": "^1.8.13",
     "@bigbinary/neetoui": "3.0.19",
-    "@bigbinary/neetoui/v2": "3.0.19",
-    "@bigbinary/neetoui/v2/formik": "3.0.19",
-    "@bigbinary/neetoui/v2/layouts": "3.0.19",
     "axios": "^0.24.0",
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
