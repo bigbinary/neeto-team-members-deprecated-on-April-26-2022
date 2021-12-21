@@ -38,7 +38,13 @@ export const getMemberFilterCounts = (teamMembers) => {
   };
 };
 
-export const getColumnData = (additionalColumns, handleUpdateStatus) => {
+export const getColumnData = ({
+  additionalColumns,
+  selectedMemberStatusFilter,
+  handleUpdateStatus,
+}) => {
+  const diplayStatusTag =
+    selectedMemberStatusFilter === MEMBER_FILTER.ALL.value;
   return [
     {
       title: "Name",
@@ -54,16 +60,18 @@ export const getColumnData = (additionalColumns, handleUpdateStatus) => {
               className="mr-2"
             />
             {name}
-            <Tag
-              style="outline"
-              className="ml-2"
-              color={active ? "green" : "red"}
-              label={
-                active
-                  ? MEMBER_FILTER.ACTIVE.label
-                  : MEMBER_FILTER.INACTIVE.label
-              }
-            />
+            {diplayStatusTag && (
+              <Tag
+                style="outline"
+                className="ml-2"
+                color={active ? "green" : "red"}
+                label={
+                  active
+                    ? MEMBER_FILTER.ACTIVE.label
+                    : MEMBER_FILTER.INACTIVE.label
+                }
+              />
+            )}
           </div>
         );
       },
