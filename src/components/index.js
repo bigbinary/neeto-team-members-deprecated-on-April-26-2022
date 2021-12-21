@@ -14,10 +14,12 @@ import {
   Toastr,
   Button,
   Typography,
+  PageLoader,
 } from "@bigbinary/neetoui/v2";
 
 import MenuBar from "./Menu";
 import AddMember from "./AddMember";
+import EmptyState from "./EmptyState";
 
 import { get, update } from "../apis";
 import {
@@ -36,6 +38,7 @@ const TeamMembers = ({
   tableProps = {},
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(false);
   const [teamMembers, setTeamMembers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,7 +47,7 @@ const TeamMembers = ({
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchTerm, setSearchTerm] = useState(null);
   const [selectedMemberStatusFilter, setSelectedMemberStatusFilter] = useState(
-    MEMBER_FILTER.ALL.value
+    MEMBER_FILTER.ACTIVE.value
   );
 
   const { additionalColumns = [], ...otherTableProps } = tableProps;
@@ -77,13 +80,13 @@ const TeamMembers = ({
 
   const fetchTeamMembers = async () => {
     try {
-      setIsLoading(true);
+      setIsPageLoading(true);
       const { data } = await get(getMembersEndpoint);
       setTeamMembers(data || SAMPLE_DATA);
     } catch (err) {
       Toastr.error(err);
     } finally {
-      setIsLoading(false);
+      setIsPageLoading(false);
     }
   };
 
@@ -97,8 +100,8 @@ const TeamMembers = ({
   };
 
   const handleDeactivateAlertClose = () => {
-    setSelectedMember(null);
     setIsAlertOpen(false);
+    setSelectedMember(null);
   };
 
   const getUpdateMemberEndpoint = (userId) =>
@@ -145,58 +148,71 @@ const TeamMembers = ({
   }, []);
 
   return (
-    <div className="flex neeto-ui-bg-white">
-      <MenuBar
-        showMenu={isMenuOpen}
-        metaName={metaName}
-        filterCounts={getMemberFilterCounts(teamMembers)}
-        selectedMemberStatusFilter={selectedMemberStatusFilter}
-        setSelectedMemberStatusFilter={setSelectedMemberStatusFilter}
-      />
-      <Container>
-        <Header
-          title={`${MEMBER_FILTER[selectedMemberStatusFilter].label} ${metaName}s`}
-          menuBarToggle={() => setIsMenuOpen(!isMenuOpen)}
-          searchProps={{
-            placeholder: `Search ${metaName}s`,
-            value: searchTerm,
-            onChange: (e) => setSearchTerm(e.target.value),
-          }}
-          actionBlock={<HeaderActionBlock />}
+    <div className="overflow-auto w-full">
+      <div className="flex neeto-ui-bg-white">
+        <MenuBar
+          showMenu={isMenuOpen}
+          metaName={metaName}
+          filterCounts={getMemberFilterCounts(teamMembers)}
+          selectedMemberStatusFilter={selectedMemberStatusFilter}
+          setSelectedMemberStatusFilter={setSelectedMemberStatusFilter}
         />
-        <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
-        <Scrollable className="w-full">
-          <Table
-            rowData={filteredMembers.map((member) => ({
-              key: member.id,
-              ...member,
-            }))}
-            columnData={getColumnData(additionalColumns, handleUpdateStatus)}
-            defaultPageSize={30}
-            rowSelection={null}
-            fixedHeight
-            loading={isLoading}
-            {...otherTableProps}
+        <Container>
+          <Header
+            title={`${MEMBER_FILTER[selectedMemberStatusFilter].label} ${metaName}s`}
+            menuBarToggle={() => setIsMenuOpen(!isMenuOpen)}
+            searchProps={{
+              placeholder: `Search ${metaName}s`,
+              value: searchTerm,
+              onChange: (e) => setSearchTerm(e.target.value),
+            }}
+            actionBlock={<HeaderActionBlock />}
           />
-        </Scrollable>
-      </Container>
+          {isPageLoading ? (
+            <PageLoader />
+          ) : filteredMembers.length ? (
+            <>
+              <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
+              <Scrollable className="w-full">
+                <Table
+                  rowData={filteredMembers.map((member) => ({
+                    key: member.id,
+                    ...member,
+                  }))}
+                  columnData={getColumnData({
+                    additionalColumns,
+                    selectedMemberStatusFilter,
+                    handleUpdateStatus,
+                  })}
+                  defaultPageSize={30}
+                  rowSelection={null}
+                  fixedHeight
+                  {...otherTableProps}
+                />
+              </Scrollable>
+            </>
+          ) : (
+            <EmptyState title={`No ${metaName}s found.`} />
+          )}
+        </Container>
 
-      <AddMember
-        metaName={metaName}
-        isOpen={isPaneOpen}
-        onClose={() => setIsPaneOpen(false)}
-        roles={roles}
-        addMemberEndpoint={addMemberEndpoint}
-        fetchTeamMembers={fetchTeamMembers}
-      />
-      <Alert
-        isOpen={isAlertOpen}
-        title={`Deactivate ${metaName}`}
-        message={`You are deactivating ${selectedMember?.name}. Are you sure you want to continue?`}
-        onClose={handleDeactivateAlertClose}
-        onSubmit={() => deactivateMember(selectedMember?.id)}
-        loading={isLoading}
-      />
+        <AddMember
+          metaName={metaName}
+          isOpen={isPaneOpen}
+          onClose={() => setIsPaneOpen(false)}
+          roles={roles}
+          addMemberEndpoint={addMemberEndpoint}
+          fetchTeamMembers={fetchTeamMembers}
+        />
+        <Alert
+          isOpen={isAlertOpen}
+          title={`Deactivate ${metaName}`}
+          message={`You are deactivating ${selectedMember?.name}. Are you sure you want to continue?`}
+          onClose={handleDeactivateAlertClose}
+          onSubmit={() => deactivateMember(selectedMember?.id)}
+          isSubmitting={isLoading}
+        />
+      </div>
     </div>
   );
 };

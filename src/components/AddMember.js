@@ -70,7 +70,7 @@ const AddMember = ({
           return (
             <>
               <Form>
-                <Pane.Body className="space-y-6">
+                <Pane.Body>
                   <div className="w-full">
                     <Input
                       label="Email"
@@ -78,7 +78,7 @@ const AddMember = ({
                       name="email"
                       placeholder="Email"
                       data-cy="add-member-email-text-field"
-                      className="mb-3"
+                      className="mb-6"
                     />
                     <Select
                       label="Role"
