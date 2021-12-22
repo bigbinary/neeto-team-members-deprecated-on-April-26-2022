@@ -50,7 +50,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get the package version from package.json
+      - name: Get the package-version from package.json
         uses: tyankatsu0105/read-package-version-actions@v1
         id: package-version
 
@@ -62,3 +62,9 @@ jobs:
         with:
           tag: v${{ steps.package-version.outputs.version }}
           publish: true
+
+      - name: Publish the package on NPM
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          access: "public"
+          token: ${{ secrets.NPM_TOKEN }}
