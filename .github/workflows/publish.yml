@@ -26,6 +26,7 @@ jobs:
         run: yarn webpack-build
 
       - name: Prefix version tag with "v"
+        if: "contains(github.event.pull_request.labels.*.name, 'release')"
         run: yarn config set version-tag-prefix "v"
 
       - name: Disable Git commit hooks
@@ -52,11 +53,12 @@ jobs:
 
       - name: Get the package version from package.json
         uses: tyankatsu0105/read-package-version-actions@v1
+        if: "contains(github.event.pull_request.labels.*.name, 'release')"
         id: package-version
 
       - name: Create a release draft on release
         uses: release-drafter/release-drafter@v5.15.0
-        if: ${{contains(github.event.pull_request.labels.*.name, 'release')}}
+        if: "contains(github.event.pull_request.labels.*.name, 'release')"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
