@@ -14,28 +14,28 @@ jobs:
       - name: Checkout the respository
         uses: actions/checkout@v2.2.0
 
-      - name: Set up NodeJS LTS version
+      - name: Setup NodeJS LTS version
         uses: actions/setup-node@v2
         with:
           node-version: "lts/*"
 
-      - name: Set up the project
+      - name: Setup the project
         run: yarn install
 
       - name: Generate production build
         run: yarn webpack-build
 
-      - name: Prefix version with "v"
+      - name: Prefix version tag with "v"
         run: yarn config set version-tag-prefix "v"
 
       - name: Disable Git commit hooks
         run: git config core.hooksPath /dev/null
 
-      - name: Bump the patch version and create tag
+      - name: Bump the patch version and create git tag on release
         if: contains(github.event.pull_request.labels.*.name, 'release')
         run: yarn version --patch
 
-      - name: Bump the patch version
+      - name: Bump the patch version without a git tag on minor changes
         if: "!contains(github.event.pull_request.labels.*.name, 'release')"
         run: yarn version --patch --no-git-tag-version
 
@@ -50,11 +50,11 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get the package-version from package.json
+      - name: Get the package version from package.json
         uses: tyankatsu0105/read-package-version-actions@v1
         id: package-version
 
-      - name: Release Drafter
+      - name: Create a release draft on release
         uses: release-drafter/release-drafter@v5.15.0
         if: ${{contains(github.event.pull_request.labels.*.name, 'release')}}
         env:
