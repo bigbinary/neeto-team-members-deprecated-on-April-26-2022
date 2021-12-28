@@ -16,7 +16,7 @@ const AddMember = ({
   metaName,
   isOpen,
   onClose,
-  roles = [],
+  roles,
   addMemberEndpoint,
   fetchTeamMembers,
 }) => {

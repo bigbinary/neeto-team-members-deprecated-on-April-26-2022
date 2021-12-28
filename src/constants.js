@@ -15,7 +15,5 @@ export const MEMBER_FILTER = {
   INACTIVE: { label: "Inactive", value: "INACTIVE" },
 };
 
-export const ROLE_OPTIONS = [
-  { label: "Owner", value: "owner" },
-  { label: "Non Owner", value: "non_owner" },
-];
+export const DEFAULT_PAGE_SIZE = 15;
+export const DEFAULT_PAGE_NUMBER = 1;
