@@ -27,7 +27,11 @@ import {
   getColumnData,
   getMemberFilterCounts,
 } from "../helpers";
-import { MEMBER_FILTER, SAMPLE_DATA, ROLE_OPTIONS } from "../constants";
+import {
+  MEMBER_FILTER,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_NUMBER,
+} from "../constants";
 
 const TeamMembers = ({
   metaName = "Agent",
@@ -46,6 +50,7 @@ const TeamMembers = ({
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchTerm, setSearchTerm] = useState(null);
+  const [pageNumber, setPageNumber] = useState(DEFAULT_PAGE_NUMBER);
   const [selectedMemberStatusFilter, setSelectedMemberStatusFilter] = useState(
     MEMBER_FILTER.ACTIVE.value
   );
@@ -82,7 +87,8 @@ const TeamMembers = ({
     try {
       setIsPageLoading(true);
       const { data } = await get(getMembersEndpoint);
-      setTeamMembers(data || SAMPLE_DATA);
+      const teamMembersData = data instanceof Array ? data : [];
+      setTeamMembers(teamMembersData);
     } catch (err) {
       Toastr.error(err);
     } finally {
@@ -93,7 +99,8 @@ const TeamMembers = ({
   const fetchRoles = async () => {
     try {
       const { data } = await get(getRolesEndpoint);
-      setRoles(data.roles || ROLE_OPTIONS);
+      const rolesData = data?.roles instanceof Array ? data.roles : [];
+      setRoles(rolesData);
     } catch (err) {
       Toastr.error(err);
     }
@@ -142,6 +149,11 @@ const TeamMembers = ({
     }
   };
 
+  const handleMemberFilterChange = (filter) => {
+    setSelectedMemberStatusFilter(filter);
+    setPageNumber(DEFAULT_PAGE_NUMBER);
+  };
+
   useEffect(() => {
     getMembersEndpoint && fetchTeamMembers();
     getRolesEndpoint && fetchRoles();
@@ -155,7 +167,7 @@ const TeamMembers = ({
           metaName={metaName}
           filterCounts={getMemberFilterCounts(teamMembers)}
           selectedMemberStatusFilter={selectedMemberStatusFilter}
-          setSelectedMemberStatusFilter={setSelectedMemberStatusFilter}
+          handleMemberFilterChange={handleMemberFilterChange}
         />
         <Container>
           <Header
@@ -184,7 +196,9 @@ const TeamMembers = ({
                     selectedMemberStatusFilter,
                     handleUpdateStatus,
                   })}
-                  defaultPageSize={30}
+                  defaultPageSize={DEFAULT_PAGE_SIZE}
+                  currentPageNumber={pageNumber}
+                  handlePageChange={(page) => setPageNumber(page)}
                   rowSelection={null}
                   fixedHeight
                   {...otherTableProps}

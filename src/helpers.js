@@ -2,7 +2,6 @@ import React from "react";
 
 import { Avatar, Dropdown, Typography, Tag } from "@bigbinary/neetoui/v2";
 import { MenuHorizontal } from "@bigbinary/neeto-icons";
-import { sortWith, descend, prop } from "ramda";
 import classnames from "classnames";
 
 import { MEMBER_FILTER } from "./constants";
@@ -17,7 +16,7 @@ export const getFilteredMembers = (teamMembers, filterValue, searchTerm) => {
       filterMembers = teamMembers.filter((member) => !member.active);
       break;
     default:
-      filterMembers = sortWith([descend(prop("active"))])(teamMembers);
+      filterMembers = teamMembers;
   }
   if (searchTerm)
     filterMembers = filterMembers.filter((members) =>

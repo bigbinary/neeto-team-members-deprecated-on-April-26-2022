@@ -10,7 +10,7 @@ const Menu = ({
   metaName,
   filterCounts,
   selectedMemberStatusFilter,
-  setSelectedMemberStatusFilter,
+  handleMemberFilterChange,
 }) => {
   const MEMBER_FILTER_KEYS = keys(MEMBER_FILTER);
   return (
@@ -24,7 +24,7 @@ const Menu = ({
             MEMBER_FILTER_KEYS.includes(selectedMemberStatusFilter) &&
             filter === selectedMemberStatusFilter
           }
-          onClick={() => setSelectedMemberStatusFilter(filter)}
+          onClick={() => handleMemberFilterChange(filter)}
         />
       ))}
     </MenuBar>
