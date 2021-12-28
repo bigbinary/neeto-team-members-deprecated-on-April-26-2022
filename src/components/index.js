@@ -120,7 +120,7 @@ const TeamMembers = ({
       const payload = { active: false };
       await update(getUpdateMemberEndpoint(userId), payload);
       fetchTeamMembers();
-      Toastr.success(`Deactivated ${metaName} successfuly`);
+      Toastr.success(`Deactivated ${metaName} successfully`);
     } catch (err) {
       Toastr.error(err);
     } finally {
@@ -134,7 +134,7 @@ const TeamMembers = ({
       const payload = { active: true };
       await update(getUpdateMemberEndpoint(userId), payload);
       fetchTeamMembers();
-      Toastr.success(`Activated ${metaName} successfuly`);
+      Toastr.success(`Activated ${metaName} successfully`);
     } catch (err) {
       Toastr.error(err);
     }
