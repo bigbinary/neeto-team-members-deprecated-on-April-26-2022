@@ -86,8 +86,9 @@ const TeamMembers = ({
   const fetchTeamMembers = async () => {
     try {
       setIsPageLoading(true);
-      const { data } = await get(getMembersEndpoint);
-      const teamMembersData = data instanceof Array ? data : [];
+      const response = await get(getMembersEndpoint);
+      const responseData = response?.data || response;
+      const teamMembersData = responseData instanceof Array ? responseData : [];
       setTeamMembers(teamMembersData);
     } catch (err) {
       Toastr.error(err);
@@ -98,8 +99,9 @@ const TeamMembers = ({
 
   const fetchRoles = async () => {
     try {
-      const { data } = await get(getRolesEndpoint);
-      const rolesData = data?.roles instanceof Array ? data.roles : [];
+      const response = await get(getRolesEndpoint);
+      const responseData = response?.data || response;
+      const rolesData = responseData instanceof Array ? responseData : [];
       setRoles(rolesData);
     } catch (err) {
       Toastr.error(err);
