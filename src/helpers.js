@@ -41,6 +41,7 @@ export const getColumnData = ({
   additionalColumns,
   selectedMemberStatusFilter,
   handleUpdateStatus,
+  handleUpdateRole
 }) => {
   const diplayStatusTag =
     selectedMemberStatusFilter === MEMBER_FILTER.ALL.value;
@@ -95,6 +96,9 @@ export const getColumnData = ({
         const name = `${first_name} ${last_name}`;
         return (
           <Dropdown icon={MenuHorizontal} buttonStyle="text" strategy="fixed">
+            <li onClick={() => handleUpdateRole(id)}>
+              <Typography style="body2">Edit Role</Typography>
+            </li>
             <li onClick={() => handleUpdateStatus({ id, name }, active)}>
               <Typography
                 style="body2"
