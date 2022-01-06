@@ -9,6 +9,10 @@ export const ADD_MEMBER_VALIDATION_SCHEMA = yup.object().shape({
   role: yup.string().required("Please select a role"),
 });
 
+export const EDIT_ROLE_VALIDATION_SCHEMA = yup.object().shape({
+  role: yup.string().required("Please select a role"),
+});
+
 export const MEMBER_FILTER = {
   ALL: { label: "All", value: "ALL" },
   ACTIVE: { label: "Active", value: "ACTIVE" },
