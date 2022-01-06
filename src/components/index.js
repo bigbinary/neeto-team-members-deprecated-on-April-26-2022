@@ -33,6 +33,7 @@ import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_NUMBER,
 } from "../constants";
+import EditRole from "./EditRole";
 
 const TeamMembers = ({
   metaName = "Agent",
@@ -48,6 +49,7 @@ const TeamMembers = ({
   const [roles, setRoles] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPaneOpen, setIsPaneOpen] = useState(false);
+  const [isEditPaneOpen, setIsEditPaneOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -161,6 +163,11 @@ const TeamMembers = ({
     }
   };
 
+  const handleUpdateRole = id => {
+    setIsEditPaneOpen(true);
+    setSelectedMember(id);
+  };
+
   const handleMemberFilterChange = (filter) => {
     setSelectedMemberStatusFilter(filter);
     setPageNumber(DEFAULT_PAGE_NUMBER);
@@ -202,6 +209,7 @@ const TeamMembers = ({
                     additionalColumns,
                     selectedMemberStatusFilter,
                     handleUpdateStatus,
+                    handleUpdateRole,
                   })}
                   defaultPageSize={DEFAULT_PAGE_SIZE}
                   currentPageNumber={pageNumber}
@@ -223,6 +231,16 @@ const TeamMembers = ({
           onClose={() => setIsPaneOpen(false)}
           roles={roles}
           addMemberEndpoint={addMemberEndpoint}
+          fetchTeamMembers={fetchTeamMembers}
+        />
+
+        <EditRole
+          metaName={metaName}
+          isOpen={isEditPaneOpen}
+          onClose={() => setIsEditPaneOpen(false)}
+          roles={roles}
+          selectedMember={selectedMember}
+          getUpdateMemberEndpoint={getUpdateMemberEndpoint}
           fetchTeamMembers={fetchTeamMembers}
         />
         <Alert
