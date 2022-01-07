@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { Plus } from "@bigbinary/neeto-icons";
+import { Plus, Search } from "@bigbinary/neeto-icons";
 import {
   Container,
   Scrollable,
@@ -9,6 +9,7 @@ import {
   SubHeader,
 } from "@bigbinary/neetoui/v2/layouts";
 import {
+  Input,
   Alert,
   Table,
   Toastr,
@@ -49,7 +50,7 @@ const TeamMembers = ({
   const [isPaneOpen, setIsPaneOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(DEFAULT_PAGE_NUMBER);
   const [selectedMemberStatusFilter, setSelectedMemberStatusFilter] = useState(
     MEMBER_FILTER.ACTIVE.value
@@ -63,14 +64,23 @@ const TeamMembers = ({
     searchTerm
   );
 
-  const HeaderActionBlock = () => {
+  const HeaderActionBlock = (metaName) => {
     return (
-      <Button
-        icon={Plus}
-        size="large"
-        label={`Add New ${metaName}`}
-        onClick={() => setIsPaneOpen(true)}
+      <div className="flex space-x-3">
+        <Input 
+        className="w-72"
+        placeholder={`Search ${metaName}s`}
+        prefix={<Search />} 
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
+        <Button
+          icon={Plus}
+          size="large"
+          label={`Add New ${metaName}`}
+          onClick={() => setIsPaneOpen(true)} 
+        />
+      </div>
     );
   };
 
@@ -175,12 +185,7 @@ const TeamMembers = ({
           <Header
             title={`${MEMBER_FILTER[selectedMemberStatusFilter].label} ${metaName}s`}
             menuBarToggle={() => setIsMenuOpen(!isMenuOpen)}
-            searchProps={{
-              placeholder: `Search ${metaName}s`,
-              value: searchTerm,
-              onChange: (e) => setSearchTerm(e.target.value),
-            }}
-            actionBlock={<HeaderActionBlock />}
+            actionBlock={HeaderActionBlock(metaName)}
           />
           {isPageLoading ? (
             <PageLoader />
