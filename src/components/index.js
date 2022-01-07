@@ -101,7 +101,7 @@ const TeamMembers = ({
     try {
       const response = await get(getRolesEndpoint);
       const responseData = response?.data || response;
-      const rolesData = responseData instanceof Array ? responseData : [];
+      const rolesData = responseData?.roles instanceof Array ? responseData?.roles : [];
       setRoles(rolesData);
     } catch (err) {
       Toastr.error(err);
