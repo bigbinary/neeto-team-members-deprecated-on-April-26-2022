@@ -7,7 +7,7 @@ import {
   Scrollable,
   Header,
   SubHeader,
-} from "@bigbinary/neetoui/v2/layouts";
+} from "@bigbinary/neetoui/layouts";
 import {
   Input,
   Alert,
@@ -16,7 +16,7 @@ import {
   Button,
   Typography,
   PageLoader,
-} from "@bigbinary/neetoui/v2";
+} from "@bigbinary/neetoui";
 
 import MenuBar from "./Menu";
 import AddMember from "./AddMember";

@@ -2,7 +2,7 @@ import React from "react";
 
 import classnames from "classnames";
 import EmptyStateSVG from "./EmptyStateSVG";
-import { Typography } from "@bigbinary/neetoui/v2";
+import { Typography } from "@bigbinary/neetoui";
 
 const EmptyState = ({ title, className }) => {
   return (
