@@ -1,6 +1,6 @@
 import React from "react";
 
-import { MenuBar } from "@bigbinary/neetoui/v2/layouts";
+import { MenuBar } from "@bigbinary/neetoui/layouts";
 import { keys } from "ramda";
 
 import { MEMBER_FILTER } from "../constants";

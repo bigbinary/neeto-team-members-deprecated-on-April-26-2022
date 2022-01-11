@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { Pane, Button, Typography, Toastr } from "@bigbinary/neetoui/v2";
-import { Input, Select } from "@bigbinary/neetoui/v2/formik";
+import { Pane, Button, Typography, Toastr } from "@bigbinary/neetoui";
+import { Input, Select } from "@bigbinary/neetoui/formik";
 import { Formik, Form } from "formik";
 
 import { post } from "../apis";
