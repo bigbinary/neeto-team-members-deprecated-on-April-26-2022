@@ -30,9 +30,9 @@ module.exports = {
     ],
   },
   externals: {
-    "@bigbinary/neetoui/v2": "@bigbinary/neetoui/v2",
-    "@bigbinary/neetoui/v2/formik": "@bigbinary/neetoui/v2/formik",
-    "@bigbinary/neetoui/v2/layouts": "@bigbinary/neetoui/v2/layouts",
+    "@bigbinary/neetoui": "@bigbinary/neetoui",
+    "@bigbinary/neetoui/formik": "@bigbinary/neetoui/formik",
+    "@bigbinary/neetoui/layouts": "@bigbinary/neetoui/layouts",
     "@bigbinary/neeto-icons": "@bigbinary/neeto-icons",
     axios: "axios",
     classnames: "classnames",
