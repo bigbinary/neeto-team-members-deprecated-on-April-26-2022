@@ -74,16 +74,19 @@ export const getColumnData = ({
           </div>
         );
       },
+      width: "30%",
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      width: "35%",
     },
     {
       title: "Role",
       dataIndex: "role",
       key: "organization_role",
+      width: "25%",
     },
     ...additionalColumns,
     {
@@ -103,6 +106,7 @@ export const getColumnData = ({
           </Dropdown>
         );
       },
+      width: "10%",
     },
   ];
 };
