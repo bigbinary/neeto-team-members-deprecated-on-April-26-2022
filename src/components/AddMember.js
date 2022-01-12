@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import { Pane, Button, Typography, Toastr } from "@bigbinary/neetoui";
+import { Modal, Button, Typography, Toastr } from "@bigbinary/neetoui";
 import { Input, Select } from "@bigbinary/neetoui/formik";
 import { Formik, Form } from "formik";
-import * as yup from "yup";
 
 import { post, update } from "../apis";
 import { ADD_MEMBER_VALIDATION_SCHEMA } from "../constants";
@@ -25,22 +24,18 @@ const AddMember = ({
 }) => {
   const [initialFormValues, setInitialFormValues] =
     useState(INITIAL_FORM_VALUES);
-  const [validationSchema, setValidationSchema] = useState(ADD_MEMBER_VALIDATION_SCHEMA);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => selectedMember && 
+    setInitialFormValues({
+      email: selectedMember.email || "",
+      role: selectedMember.role || "",
+    }), [selectedMember]);
 
   const handleClose = () => {
     onClose();
     setInitialFormValues(INITIAL_FORM_VALUES);
   };
-
-  useEffect(() => {
-    if(selectedMember) {
-      setInitialFormValues({ role: "" });
-      setValidationSchema(yup.object().shape({
-        role: yup.string().required("Please select a role"),
-      }));
-    }
-  }, [selectedMember]);
 
   const handleAddMember = async (values) => {
     try {
@@ -58,7 +53,7 @@ const AddMember = ({
         },
       };
       selectedMember ? 
-        await update(getUpdateMemberEndpoint(selectedMember), payload) :
+        await update(getUpdateMemberEndpoint(selectedMember.id), payload) :
         await post(addMemberEndpoint, payload);
       fetchTeamMembers();
       handleClose();
@@ -69,16 +64,16 @@ const AddMember = ({
   };
 
   return (
-    <Pane isOpen={isOpen} onClose={handleClose}>
-      <Pane.Header>
+    <Modal isOpen={isOpen} onClose={handleClose}>
+      <Modal.Header>
         <Typography style="h2" weight="semibold">
-          {selectedMember ? "Update" : "Add New"} {metaName}
+          {selectedMember ? "Edit" : "Add New"} {metaName}
         </Typography>
-      </Pane.Header>
+      </Modal.Header>
       <Formik
         initialValues={initialFormValues}
         onSubmit={handleAddMember}
-        validationSchema={validationSchema}
+        validationSchema={ADD_MEMBER_VALIDATION_SCHEMA}
         validateOnChange={submitted}
         validateOnBlur={submitted}
         enableReinitialize
@@ -90,20 +85,17 @@ const AddMember = ({
           return (
             <>
               <Form>
-                <Pane.Body>
+                <Modal.Body>
                   <div className="w-full">
-                    {
-                      !selectedMember && (
-                        <Input
-                          label="Email"
-                          size="small"
-                          name="email"
-                          placeholder="Email"
-                          data-cy="add-member-email-text-field"
-                          className="mb-6"
-                        />
-                      )
-                    }
+                    <Input
+                      label="Email"
+                      size="small"
+                      name="email"
+                      placeholder="Email"
+                      data-cy="add-member-email-text-field"
+                      className="mb-6"
+                      disabled={selectedMember}
+                    />
                     <Select
                       label="Role"
                       size="small"
@@ -118,12 +110,12 @@ const AddMember = ({
                       data-cy="add-member-role-select"
                     />
                   </div>
-                </Pane.Body>
+                </Modal.Body>
 
-                <Pane.Footer>
+                <Modal.Footer>
                   <Button
                     type="submit"
-                    label="Submit"
+                    label="Save Changes"
                     size="large"
                     style="primary"
                     className="mr-3"
@@ -140,13 +132,13 @@ const AddMember = ({
                     style="text"
                     data-cy="add-member-cancel-button"
                   />
-                </Pane.Footer>
+                </Modal.Footer>
               </Form>
             </>
           );
         }}
       </Formik>
-    </Pane>
+    </Modal>
   );
 };
 

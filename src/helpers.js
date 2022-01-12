@@ -92,12 +92,12 @@ export const getColumnData = ({
     ...additionalColumns,
     {
       key: "icon_button",
-      render: (_, { first_name, last_name, id, active }) => {
+      render: (_, { first_name, last_name, id, active, email, role }) => {
         const name = `${first_name} ${last_name}`;
         return (
           <Dropdown icon={MenuHorizontal} buttonStyle="text" strategy="fixed">
-            <li onClick={() => handleUpdateRole(id)}>
-              <Typography style="body2">Edit Role</Typography>
+            <li onClick={() => handleUpdateRole({ id, email, role })}>
+              <Typography style="body2">Edit</Typography>
             </li>
             <li onClick={() => handleUpdateStatus({ id, name }, active)}>
               <Typography

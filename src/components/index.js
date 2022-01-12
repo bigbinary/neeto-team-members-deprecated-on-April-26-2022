@@ -47,7 +47,7 @@ const TeamMembers = ({
   const [teamMembers, setTeamMembers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isPaneOpen, setIsPaneOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -78,7 +78,7 @@ const TeamMembers = ({
           icon={Plus}
           size="large"
           label={`Add New ${metaName}`}
-          onClick={() => setIsPaneOpen(true)} 
+          onClick={() => setIsModalOpen(true)} 
         />
       </div>
     );
@@ -161,14 +161,14 @@ const TeamMembers = ({
     }
   };
 
-  const handleUpdateRole = id => {
-    setIsPaneOpen(true);
-    setSelectedMember(id);
+  const handleUpdateRole = user => {
+    setIsModalOpen(true);
+    setSelectedMember(user);
   };
 
   const handleClose = () => { 
-    setIsPaneOpen(false);
-    setSelectedMember(0); 
+    setIsModalOpen(false);
+    setSelectedMember(null); 
   };
 
   const handleMemberFilterChange = (filter) => {
@@ -230,7 +230,7 @@ const TeamMembers = ({
 
         <AddMember
           metaName={metaName}
-          isOpen={isPaneOpen}
+          isOpen={isModalOpen}
           onClose={handleClose}
           roles={roles}
           selectedMember={selectedMember}
