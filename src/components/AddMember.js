@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { Modal, Button, Typography, Toastr } from "@bigbinary/neetoui";
 import { Input, Select } from "@bigbinary/neetoui/formik";
@@ -6,11 +6,6 @@ import { Formik, Form } from "formik";
 
 import { post, update } from "../apis";
 import { ADD_MEMBER_VALIDATION_SCHEMA } from "../constants";
-
-const INITIAL_FORM_VALUES = {
-  email: "",
-  role: "",
-};
 
 const AddMember = ({
   metaName,
@@ -22,41 +17,32 @@ const AddMember = ({
   getUpdateMemberEndpoint,
   fetchTeamMembers,
 }) => {
-  const [initialFormValues, setInitialFormValues] =
-    useState(INITIAL_FORM_VALUES);
+  const INITIAL_FORM_VALUES = {
+    email: selectedMember?.email || "",
+    role: selectedMember?.role || "",
+  };
   const [submitted, setSubmitted] = useState(false);
 
-  useEffect(() => selectedMember && 
-    setInitialFormValues({
-      email: selectedMember.email || "",
-      role: selectedMember.role || "",
-    }), [selectedMember]);
-
-  const handleClose = () => {
-    onClose();
-    setInitialFormValues(INITIAL_FORM_VALUES);
+  const renderPayload = values => selectedMember ? {
+    active: true,
+    organization_role: values.role,
+  } : {
+    user: {
+      first_name: "-",
+      last_name: "-",
+      email: values.email,
+      invite_status: "pending",
+      organization_role: values.role,
+    },
   };
 
   const handleAddMember = async (values) => {
     try {
-      const payload = selectedMember ? {
-        active: true,
-        organization_role: values.role,
-      } : 
-      {
-        user: {
-          first_name: "-",
-          last_name: "-",
-          email: values.email,
-          invite_status: "pending",
-          organization_role: values.role,
-        },
-      };
-      selectedMember ? 
-        await update(getUpdateMemberEndpoint(selectedMember.id), payload) :
-        await post(addMemberEndpoint, payload);
+      selectedMember 
+        ? await update(getUpdateMemberEndpoint(selectedMember.id), renderPayload(values))
+        : await post(addMemberEndpoint, renderPayload(values));
       fetchTeamMembers();
-      handleClose();
+      onClose();
       Toastr.success(`${selectedMember ? "Updated" : "Added"} ${metaName} successfully`);
     } catch (err) {
       Toastr.error(err);
@@ -64,14 +50,14 @@ const AddMember = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <Modal.Header>
         <Typography style="h2" weight="semibold">
           {selectedMember ? "Edit" : "Add New"} {metaName}
         </Typography>
       </Modal.Header>
       <Formik
-        initialValues={initialFormValues}
+        initialValues={INITIAL_FORM_VALUES}
         onSubmit={handleAddMember}
         validationSchema={ADD_MEMBER_VALIDATION_SCHEMA}
         validateOnChange={submitted}
@@ -126,7 +112,7 @@ const AddMember = ({
                   />
 
                   <Button
-                    onClick={handleClose}
+                    onClick={onClose}
                     label="Cancel"
                     size="large"
                     style="text"
