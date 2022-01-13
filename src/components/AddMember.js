@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
 import { Modal, Button, Typography, Toastr } from "@bigbinary/neetoui";
-import { Input, Select } from "@bigbinary/neetoui/formik";
+import { Select } from "@bigbinary/neetoui/formik";
 import { Formik, Form } from "formik";
 
 import { post, update } from "../apis";
 import { ADD_MEMBER_VALIDATION_SCHEMA } from "../constants";
+import MultipleEmailInput from "./Common/MultipleEmailInput";
 
 const AddMember = ({
   metaName,
@@ -18,7 +19,7 @@ const AddMember = ({
   fetchTeamMembers,
 }) => {
   const INITIAL_FORM_VALUES = {
-    email: selectedMember?.email || "",
+    emails: [selectedMember?.email] || [],
     role: selectedMember?.role || "",
   };
   const [submitted, setSubmitted] = useState(false);
@@ -72,7 +73,7 @@ const AddMember = ({
         validateOnBlur={submitted}
         enableReinitialize
       >
-        {({ values, isSubmitting, setFieldValue }) => {
+        {({ values, isSubmitting, setFieldValue, errors, handleBlur }) => {
           const roleValue = values.role
             ? { label: values.role, value: values.role }
             : null;
@@ -80,19 +81,18 @@ const AddMember = ({
             <>
               <Form>
                 <Modal.Body>
-                  <div className="w-full">
-                    <Input
-                      label="Email"
-                      size="small"
-                      name="email"
-                      placeholder="Email"
-                      data-cy="add-member-email-text-field"
-                      className="mb-6"
-                      disabled={selectedMember}
+                  <div className="w-full space-y-6">
+                    <MultipleEmailInput
+                      label="Emails"
+                      name="emails"
+                      value={values.emails}
+                      onChange={(emails) => setFieldValue("emails", emails)}
+                      error={errors.emails}
+                      onBlur={handleBlur}
                     />
                     <Select
                       label="Role"
-                      size="small"
+                      size="large"
                       name="role"
                       onChange={(role) => setFieldValue("role", role.value)}
                       value={roleValue}
