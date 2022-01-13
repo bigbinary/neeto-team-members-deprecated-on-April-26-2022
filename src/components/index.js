@@ -162,12 +162,12 @@ const TeamMembers = ({
   };
 
   const handleUpdateRole = user => {
-    setIsModalOpen(true);
     setSelectedMember(user);
+    setIsModalOpen(true);
   };
 
   const handleClose = () => { 
-    setIsModalOpen(false);
+    setIsModalOpen(false); 
     setSelectedMember(null); 
   };
 
@@ -180,6 +180,14 @@ const TeamMembers = ({
     getMembersEndpoint && fetchTeamMembers();
     getRolesEndpoint && fetchRoles();
   }, []);
+
+  if (isPageLoading) {
+    return (
+    <div className="h-screen w-screen">
+      <PageLoader />
+    </div>
+    );
+  }
 
   return (
     <div className="overflow-auto w-full">
@@ -197,9 +205,7 @@ const TeamMembers = ({
             menuBarToggle={() => setIsMenuOpen(!isMenuOpen)}
             actionBlock={HeaderActionBlock(metaName)}
           />
-          {isPageLoading ? (
-            <PageLoader />
-          ) : filteredMembers.length ? (
+          {filteredMembers.length ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
               <Scrollable className="w-full">
