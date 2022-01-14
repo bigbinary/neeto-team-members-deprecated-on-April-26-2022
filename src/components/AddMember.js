@@ -34,7 +34,7 @@ const AddMember = ({
           user: {
             first_name: "-",
             last_name: "-",
-            email: values.email,
+            emails: values.emails.map(({ value }) => value),
             invite_status: "pending",
             organization_role: values.role,
           },
