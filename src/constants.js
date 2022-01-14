@@ -1,7 +1,8 @@
 import * as yup from "yup";
 
 export const ADD_MEMBER_VALIDATION_SCHEMA = yup.object().shape({
-  emails: yup.array()
+  emails: yup
+    .array()
     .min(1, "Atleast one email is required")
     .of(
       yup.object().shape({

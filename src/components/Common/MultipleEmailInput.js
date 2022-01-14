@@ -20,12 +20,12 @@ const customComponents = {
   Control: CustomControl,
 };
 
-const isValidEmail = email => {
+const isValidEmail = (email) => {
   const regex = new RegExp("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", "i");
   return regex.test(email) ? true : false;
 };
 
-const createOption = label => ({
+const createOption = (label) => ({
   label,
   value: label,
   valid: isValidEmail(label),
@@ -41,9 +41,15 @@ const customStyles = {
   },
 };
 
-const MultipleEmailInput = ({ label = "", value = [], onChange, error, onBlur }) => {
+const MultipleEmailInput = ({
+  label = "",
+  value = [],
+  onChange,
+  error,
+  onBlur,
+}) => {
   const [inputValue, setInputValue] = useState("");
-  const handleKeyDown = event => {
+  const handleKeyDown = (event) => {
     if (!inputValue) return;
     switch (event.key) {
       case "Enter":
@@ -51,17 +57,17 @@ const MultipleEmailInput = ({ label = "", value = [], onChange, error, onBlur })
       case ",":
       case " ": {
         const emails = inputValue.match(/[^\s,]+/g);
-        const values = emails.map(email => createOption(email));
+        const values = emails.map((email) => createOption(email));
         onChange([...value, ...values]);
         setInputValue("");
         event.preventDefault();
       }
     }
   };
-  const handleBlur = event => {
+  const handleBlur = (event) => {
     if (inputValue) {
       const emails = inputValue.match(/[^\s,]+/g);
-      const values = emails.map(email => createOption(email));
+      const values = emails.map((email) => createOption(email));
       onChange([...value, ...values]);
       setInputValue("");
     }
@@ -86,7 +92,7 @@ const MultipleEmailInput = ({ label = "", value = [], onChange, error, onBlur })
         isMulti
         menuIsOpen={false}
         onChange={onChange}
-        onInputChange={inputValue => setInputValue(inputValue)}
+        onInputChange={(inputValue) => setInputValue(inputValue)}
         onKeyDown={handleKeyDown}
         placeholder="Add emails to invite"
         value={value}
