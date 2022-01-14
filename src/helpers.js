@@ -41,7 +41,7 @@ export const getColumnData = ({
   additionalColumns,
   selectedMemberStatusFilter,
   handleUpdateStatus,
-  handleUpdateRole
+  handleUpdateRole,
 }) => {
   const diplayStatusTag =
     selectedMemberStatusFilter === MEMBER_FILTER.ALL.value;

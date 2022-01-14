@@ -67,18 +67,18 @@ const TeamMembers = ({
   const HeaderActionBlock = (metaName) => {
     return (
       <div className="flex space-x-3">
-        <Input 
-        className="w-72"
-        placeholder={`Search ${metaName}s`}
-        prefix={<Search />} 
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+        <Input
+          className="w-72"
+          placeholder={`Search ${metaName}s`}
+          prefix={<Search />}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <Button
           icon={Plus}
           size="large"
           label={`Add New ${metaName}`}
-          onClick={() => setIsModalOpen(true)} 
+          onClick={() => setIsModalOpen(true)}
         />
       </div>
     );
@@ -111,7 +111,8 @@ const TeamMembers = ({
     try {
       const response = await get(getRolesEndpoint);
       const responseData = response?.data || response;
-      const rolesData = responseData?.roles instanceof Array ? responseData?.roles : [];
+      const rolesData =
+        responseData?.roles instanceof Array ? responseData?.roles : [];
       setRoles(rolesData);
     } catch (err) {
       Toastr.error(err);
@@ -161,14 +162,14 @@ const TeamMembers = ({
     }
   };
 
-  const handleUpdateRole = user => {
+  const handleUpdateRole = (user) => {
     setSelectedMember(user);
     setIsModalOpen(true);
   };
 
-  const handleClose = () => { 
-    setIsModalOpen(false); 
-    setSelectedMember(null); 
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setSelectedMember(null);
   };
 
   const handleMemberFilterChange = (filter) => {
@@ -183,9 +184,9 @@ const TeamMembers = ({
 
   if (isPageLoading) {
     return (
-    <div className="h-screen w-screen">
-      <PageLoader />
-    </div>
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
     );
   }
 

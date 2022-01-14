@@ -23,27 +23,35 @@ const AddMember = ({
   };
   const [submitted, setSubmitted] = useState(false);
 
-  const renderPayload = values => selectedMember ? {
-    active: true,
-    organization_role: values.role,
-  } : {
-    user: {
-      first_name: "-",
-      last_name: "-",
-      email: values.email,
-      invite_status: "pending",
-      organization_role: values.role,
-    },
-  };
+  const renderPayload = (values) =>
+    selectedMember
+      ? {
+          active: true,
+          organization_role: values.role,
+        }
+      : {
+          user: {
+            first_name: "-",
+            last_name: "-",
+            email: values.email,
+            invite_status: "pending",
+            organization_role: values.role,
+          },
+        };
 
   const handleAddMember = async (values) => {
     try {
-      selectedMember 
-        ? await update(getUpdateMemberEndpoint(selectedMember.id), renderPayload(values))
+      selectedMember
+        ? await update(
+            getUpdateMemberEndpoint(selectedMember.id),
+            renderPayload(values)
+          )
         : await post(addMemberEndpoint, renderPayload(values));
       fetchTeamMembers();
       onClose();
-      Toastr.success(`${selectedMember ? "Updated" : "Added"} ${metaName} successfully`);
+      Toastr.success(
+        `${selectedMember ? "Updated" : "Added"} ${metaName} successfully`
+      );
     } catch (err) {
       Toastr.error(err);
     }
