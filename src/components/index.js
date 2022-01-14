@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import { Plus, Search } from "@bigbinary/neeto-icons";
-import {
-  Container,
-  Scrollable,
-  Header,
-  SubHeader,
-} from "@bigbinary/neetoui/layouts";
+import { Container, Header, SubHeader } from "@bigbinary/neetoui/layouts";
 import {
   Input,
   Alert,
@@ -78,7 +73,11 @@ const TeamMembers = ({
           icon={Plus}
           size="large"
           label={`Add New ${metaName}`}
+<<<<<<< HEAD
           onClick={() => setIsModalOpen(true)}
+=======
+          onClick={() => setIsPaneOpen(true)}
+>>>>>>> 37f7dae (Fixed resize observer loop limit exceeded error)
         />
       </div>
     );
@@ -209,26 +208,23 @@ const TeamMembers = ({
           {filteredMembers.length ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
-              <Scrollable className="w-full">
-                <Table
-                  rowData={filteredMembers.map((member) => ({
-                    key: member.id,
-                    ...member,
-                  }))}
-                  columnData={getColumnData({
-                    additionalColumns,
-                    selectedMemberStatusFilter,
-                    handleUpdateStatus,
-                    handleUpdateRole,
-                  })}
-                  defaultPageSize={DEFAULT_PAGE_SIZE}
-                  currentPageNumber={pageNumber}
-                  handlePageChange={(page) => setPageNumber(page)}
-                  rowSelection={null}
-                  fixedHeight
-                  {...otherTableProps}
-                />
-              </Scrollable>
+              <Table
+                rowData={filteredMembers.map((member) => ({
+                  key: member.id,
+                  ...member,
+                }))}
+                columnData={getColumnData({
+                  additionalColumns,
+                  selectedMemberStatusFilter,
+                  handleUpdateStatus,
+                })}
+                defaultPageSize={DEFAULT_PAGE_SIZE}
+                currentPageNumber={pageNumber}
+                handlePageChange={(page) => setPageNumber(page)}
+                rowSelection={null}
+                fixedHeight
+                {...otherTableProps}
+              />
             </>
           ) : (
             <EmptyState title={`No ${metaName}s found.`} />
