@@ -77,10 +77,10 @@ const MultipleEmailInput = ({ label = "", value = [], onChange, error, onBlur })
       <CreatableSelect
         onBlur={handleBlur}
         className={classnames(
-          "ni-react-select__container",
-          !!error && "ni-react-select__container--error"
+          "neeto-ui-react-select__container",
+          !!error && "neeto-ui-react-select__container--error"
         )}
-        classNamePrefix="ni-react-select"
+        classNamePrefix="neeto-ui-react-select"
         components={customComponents}
         inputValue={inputValue}
         isMulti
