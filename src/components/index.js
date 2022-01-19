@@ -73,11 +73,7 @@ const TeamMembers = ({
           icon={Plus}
           size="large"
           label={`Add New ${metaName}`}
-<<<<<<< HEAD
           onClick={() => setIsModalOpen(true)}
-=======
-          onClick={() => setIsPaneOpen(true)}
->>>>>>> 37f7dae (Fixed resize observer loop limit exceeded error)
         />
       </div>
     );
