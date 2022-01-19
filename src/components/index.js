@@ -208,23 +208,22 @@ const TeamMembers = ({
           {filteredMembers.length ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
-              <Table
-                rowData={filteredMembers.map((member) => ({
-                  key: member.id,
-                  ...member,
-                }))}
-                columnData={getColumnData({
-                  additionalColumns,
-                  selectedMemberStatusFilter,
-                  handleUpdateStatus,
-                })}
-                defaultPageSize={DEFAULT_PAGE_SIZE}
-                currentPageNumber={pageNumber}
-                handlePageChange={(page) => setPageNumber(page)}
-                rowSelection={null}
-                fixedHeight
-                {...otherTableProps}
-              />
+              <div className="neeto-team-members__table-wrapper" style={{height: `calc(100vh - 150px)`}}>
+                <Table
+                  rowData={filteredMembers}
+                  columnData={getColumnData({
+                    additionalColumns,
+                    selectedMemberStatusFilter,
+                    handleUpdateStatus,
+                  })}
+                  defaultPageSize={DEFAULT_PAGE_SIZE}
+                  currentPageNumber={pageNumber}
+                  handlePageChange={(page) => setPageNumber(page)}
+                  rowSelection={null}
+                  fixedHeight
+                  {...otherTableProps}
+                />
+              </div>
             </>
           ) : (
             <EmptyState title={`No ${metaName}s found.`} />
