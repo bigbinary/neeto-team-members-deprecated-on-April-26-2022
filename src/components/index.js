@@ -215,6 +215,7 @@ const TeamMembers = ({
                     additionalColumns,
                     selectedMemberStatusFilter,
                     handleUpdateStatus,
+                    handleUpdateRole,
                   })}
                   defaultPageSize={DEFAULT_PAGE_SIZE}
                   currentPageNumber={pageNumber}
