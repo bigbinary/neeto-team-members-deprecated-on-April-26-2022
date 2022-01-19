@@ -47,7 +47,7 @@ const TeamMembers = ({
   const [teamMembers, setTeamMembers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isPaneOpen, setIsPaneOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -67,18 +67,18 @@ const TeamMembers = ({
   const HeaderActionBlock = (metaName) => {
     return (
       <div className="flex space-x-3">
-        <Input 
-        className="w-72"
-        placeholder={`Search ${metaName}s`}
-        prefix={<Search />} 
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+        <Input
+          className="w-72"
+          placeholder={`Search ${metaName}s`}
+          prefix={<Search />}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <Button
           icon={Plus}
           size="large"
           label={`Add New ${metaName}`}
-          onClick={() => setIsPaneOpen(true)} 
+          onClick={() => setIsModalOpen(true)}
         />
       </div>
     );
@@ -111,7 +111,8 @@ const TeamMembers = ({
     try {
       const response = await get(getRolesEndpoint);
       const responseData = response?.data || response;
-      const rolesData = responseData?.roles instanceof Array ? responseData?.roles : [];
+      const rolesData =
+        responseData?.roles instanceof Array ? responseData?.roles : [];
       setRoles(rolesData);
     } catch (err) {
       Toastr.error(err);
@@ -161,6 +162,16 @@ const TeamMembers = ({
     }
   };
 
+  const handleUpdateRole = (user) => {
+    setSelectedMember(user);
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setSelectedMember(null);
+  };
+
   const handleMemberFilterChange = (filter) => {
     setSelectedMemberStatusFilter(filter);
     setPageNumber(DEFAULT_PAGE_NUMBER);
@@ -170,6 +181,14 @@ const TeamMembers = ({
     getMembersEndpoint && fetchTeamMembers();
     getRolesEndpoint && fetchRoles();
   }, []);
+
+  if (isPageLoading) {
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-auto w-full">
@@ -187,9 +206,7 @@ const TeamMembers = ({
             menuBarToggle={() => setIsMenuOpen(!isMenuOpen)}
             actionBlock={HeaderActionBlock(metaName)}
           />
-          {isPageLoading ? (
-            <PageLoader />
-          ) : filteredMembers.length ? (
+          {filteredMembers.length ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
               <Scrollable className="w-full">
@@ -202,6 +219,7 @@ const TeamMembers = ({
                     additionalColumns,
                     selectedMemberStatusFilter,
                     handleUpdateStatus,
+                    handleUpdateRole,
                   })}
                   defaultPageSize={DEFAULT_PAGE_SIZE}
                   currentPageNumber={pageNumber}
@@ -219,10 +237,12 @@ const TeamMembers = ({
 
         <AddMember
           metaName={metaName}
-          isOpen={isPaneOpen}
-          onClose={() => setIsPaneOpen(false)}
+          isOpen={isModalOpen}
+          onClose={handleClose}
           roles={roles}
+          selectedMember={selectedMember}
           addMemberEndpoint={addMemberEndpoint}
+          getUpdateMemberEndpoint={getUpdateMemberEndpoint}
           fetchTeamMembers={fetchTeamMembers}
         />
         <Alert
