@@ -29,6 +29,10 @@ import {
   DEFAULT_PAGE_NUMBER,
 } from "../constants";
 
+const tableWrapperStyle = {
+  height: `calc(100vh - 150px)`
+};
+
 const TeamMembers = ({
   metaName = "Agent",
   getMembersEndpoint = "/api/v1/teams",
@@ -204,7 +208,7 @@ const TeamMembers = ({
           {filteredMembers.length ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
-              <div className="neeto-team-members__table-wrapper" style={{height: `calc(100vh - 150px)`}}>
+              <div className="neeto-team-members__table-wrapper" style={tableWrapperStyle}>
                 <Table
                   rowData={filteredMembers}
                   columnData={getColumnData({
