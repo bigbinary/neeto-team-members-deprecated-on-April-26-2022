@@ -47,6 +47,7 @@ const MultipleEmailInput = ({
   onChange,
   error,
   onBlur,
+  disabled,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const handleKeyDown = (event) => {
@@ -97,6 +98,7 @@ const MultipleEmailInput = ({
         placeholder="Add emails to invite"
         value={value}
         styles={customStyles}
+        isDisabled={disabled}
       />
       <div>
         {!!error && Array.isArray(error) ? (

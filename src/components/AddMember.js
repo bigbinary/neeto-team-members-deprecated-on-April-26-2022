@@ -19,7 +19,9 @@ const AddMember = ({
   fetchTeamMembers,
 }) => {
   const INITIAL_FORM_VALUES = {
-    emails: [selectedMember?.email] || [],
+    emails: selectedMember
+      ? [{ label: selectedMember.email, value: selectedMember.email }]
+      : [],
     role: selectedMember?.role || "",
   };
   const [submitted, setSubmitted] = useState(false);
@@ -89,6 +91,7 @@ const AddMember = ({
                       onChange={(emails) => setFieldValue("emails", emails)}
                       error={errors.emails}
                       onBlur={handleBlur}
+                      disabled={selectedMember}
                     />
                     <Select
                       label="Role"
