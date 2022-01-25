@@ -8,7 +8,7 @@ import CreatableSelect from "react-select/creatable";
 
 const CustomControl = ({ children, ...props }) => (
   <components.Control {...props}>
-    <div>{children}</div>
+    <div className="overflow-hidden">{children}</div>
   </components.Control>
 );
 
@@ -57,15 +57,15 @@ const MultipleEmailInput = ({
     setInputValue("");
   };
 
-  const handleKeyDown = ({ key, preventDefault }) => {
+  const handleKeyDown = (event) => {
     if (!inputValue) return;
-    switch (key) {
+    switch (event.key) {
       case "Enter":
       case "Tab":
       case ",":
       case " ": {
         handleEmailChange();
-        preventDefault();
+        event.preventDefault();
       }
     }
   };
