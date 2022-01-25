@@ -6,13 +6,11 @@ import PropTypes from "prop-types";
 import { components } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
-const CustomControl = ({ children, ...props }) => {
-  return (
-    <components.Control {...props}>
-      <div>{children}</div>
-    </components.Control>
-  );
-};
+const CustomControl = ({ children, ...props }) => (
+  <components.Control {...props}>
+    <div>{children}</div>
+  </components.Control>
+);
 
 const customComponents = {
   DropdownIndicator: null,
@@ -22,7 +20,7 @@ const customComponents = {
 
 const isValidEmail = (email) => {
   const regex = new RegExp("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", "i");
-  return regex.test(email) ? true : false;
+  return regex.test(email);
 };
 
 const createOption = (label) => ({
@@ -54,6 +52,14 @@ const MultipleEmailInput = ({
   disabled,
 }) => {
   const [inputValue, setInputValue] = useState("");
+
+  const handleEmailChange = () => {
+    const emails = inputValue.match(/[^\s,]+/g);
+    const values = emails.map((email) => createOption(email));
+    onChange([...value, ...values]);
+    setInputValue("");
+  };
+
   const handleKeyDown = (event) => {
     if (!inputValue) return;
     switch (event.key) {
@@ -61,21 +67,13 @@ const MultipleEmailInput = ({
       case "Tab":
       case ",":
       case " ": {
-        const emails = inputValue.match(/[^\s,]+/g);
-        const values = emails.map((email) => createOption(email));
-        onChange([...value, ...values]);
-        setInputValue("");
+        handleEmailChange();
         event.preventDefault();
       }
     }
   };
   const handleBlur = (event) => {
-    if (inputValue) {
-      const emails = inputValue.match(/[^\s,]+/g);
-      const values = emails.map((email) => createOption(email));
-      onChange([...value, ...values]);
-      setInputValue("");
-    }
+    if (inputValue) handleEmailChange();
     onBlur(event);
   };
   return (
