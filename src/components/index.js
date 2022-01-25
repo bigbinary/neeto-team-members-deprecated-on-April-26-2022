@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import { Plus, Search } from "@bigbinary/neeto-icons";
-import {
-  Container,
-  Scrollable,
-  Header,
-  SubHeader,
-} from "@bigbinary/neetoui/layouts";
+import { Container, Header, SubHeader } from "@bigbinary/neetoui/layouts";
 import {
   Input,
   Alert,
@@ -33,6 +28,10 @@ import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_NUMBER,
 } from "../constants";
+
+const tableWrapperStyle = {
+  height: `calc(100vh - 150px)`
+};
 
 const TeamMembers = ({
   metaName = "Agent",
@@ -209,12 +208,9 @@ const TeamMembers = ({
           {filteredMembers.length ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
-              <Scrollable className="w-full">
+              <div className="neeto-team-members__table-wrapper" style={tableWrapperStyle}>
                 <Table
-                  rowData={filteredMembers.map((member) => ({
-                    key: member.id,
-                    ...member,
-                  }))}
+                  rowData={filteredMembers}
                   columnData={getColumnData({
                     additionalColumns,
                     selectedMemberStatusFilter,
@@ -228,7 +224,7 @@ const TeamMembers = ({
                   fixedHeight
                   {...otherTableProps}
                 />
-              </Scrollable>
+              </div>
             </>
           ) : (
             <EmptyState title={`No ${metaName}s found.`} />
