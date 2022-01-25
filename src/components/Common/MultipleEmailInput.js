@@ -32,11 +32,15 @@ const createOption = (label) => ({
 });
 
 const customStyles = {
+  input: (styles) => ({
+    ...styles,
+    overflow: "hidden",
+  }),
   multiValue: (styles, { data }) => {
     const valid = data.valid;
     return {
       ...styles,
-      border: !valid ? `thin dashed #f56a58 !important` : `none`,
+      border: !valid ? "thin dashed #f56a58 !important" : "none",
     };
   },
 };
