@@ -34,13 +34,10 @@ const customStyles = {
     ...styles,
     overflow: "hidden",
   }),
-  multiValue: (styles, { data }) => {
-    const valid = data.valid;
-    return {
-      ...styles,
-      border: !valid ? "thin dashed #f56a58 !important" : "none",
-    };
-  },
+  multiValue: (styles, { data: { valid } }) => ({
+    ...styles,
+    border: !valid ? "thin dashed #f56a58 !important" : "none",
+  }),
 };
 
 const MultipleEmailInput = ({
@@ -60,22 +57,24 @@ const MultipleEmailInput = ({
     setInputValue("");
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = ({ key, preventDefault }) => {
     if (!inputValue) return;
-    switch (event.key) {
+    switch (key) {
       case "Enter":
       case "Tab":
       case ",":
       case " ": {
         handleEmailChange();
-        event.preventDefault();
+        preventDefault();
       }
     }
   };
+
   const handleBlur = (event) => {
     if (inputValue) handleEmailChange();
     onBlur(event);
   };
+
   return (
     <div className="flex flex-col">
       {label && (
@@ -83,6 +82,7 @@ const MultipleEmailInput = ({
           {label}
         </Label>
       )}
+
       <CreatableSelect
         onBlur={handleBlur}
         className={classnames(
@@ -102,6 +102,7 @@ const MultipleEmailInput = ({
         styles={customStyles}
         isDisabled={disabled}
       />
+
       <div>
         {!!error && Array.isArray(error) ? (
           <Typography style="body3" className="neeto-ui-text-error mt-1">
@@ -112,6 +113,7 @@ const MultipleEmailInput = ({
             {error}
           </Typography>
         )}
+
         {!!value?.length && !error?.length && (
           <Typography style="body2" className="float-right mt-2">{`${
             value.length
