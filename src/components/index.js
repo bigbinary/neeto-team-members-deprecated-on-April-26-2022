@@ -30,7 +30,7 @@ import {
 } from "../constants";
 
 const tableWrapperStyle = {
-  height: `calc(100vh - 150px)`,
+  height: "calc(100vh - 150px)",
 };
 
 const TeamMembers = ({
@@ -114,7 +114,7 @@ const TeamMembers = ({
     }
   };
 
-  const handleDeactivateAlertClose = () => {
+  const handleAlertClose = () => {
     setIsAlertOpen(false);
     setSelectedMember(null);
   };
@@ -132,29 +132,33 @@ const TeamMembers = ({
     } catch (err) {
       Toastr.error(err);
     } finally {
-      handleDeactivateAlertClose();
+      handleAlertClose();
       setIsLoading(false);
     }
   };
 
   const activateMember = async (userId) => {
     try {
+      setIsLoading(true);
       const payload = { active: true };
       await update(getUpdateMemberEndpoint(userId), payload);
       fetchTeamMembers();
       Toastr.success(`Activated ${metaName} successfully`);
     } catch (err) {
       Toastr.error(err);
+    } finally {
+      handleAlertClose();
+      setIsLoading(false);
     }
   };
 
   const handleUpdateStatus = (user, status) => {
-    if (status) {
-      setSelectedMember(user);
-      setIsAlertOpen(true);
-    } else {
-      activateMember(user.id);
-    }
+    const member = {
+      ...user,
+      status,
+    };
+    setSelectedMember(member);
+    setIsAlertOpen(true);
   };
 
   const handleUpdateRole = (user) => {
@@ -242,10 +246,18 @@ const TeamMembers = ({
         />
         <Alert
           isOpen={isAlertOpen}
-          title={`Deactivate ${metaName}`}
-          message={`You are deactivating ${selectedMember?.name}. Are you sure you want to continue?`}
-          onClose={handleDeactivateAlertClose}
-          onSubmit={() => deactivateMember(selectedMember?.id)}
+          title={`${
+            selectedMember?.status ? "Deactivate" : "Activate"
+          } ${metaName}`}
+          message={`You are ${
+            selectedMember?.status ? "Deactivating" : "Activating"
+          } ${selectedMember?.name}. Are you sure you want to continue?`}
+          onClose={handleAlertClose}
+          onSubmit={() =>
+            selectedMember.status
+              ? deactivateMember(selectedMember?.id)
+              : activateMember(selectedMember?.id)
+          }
           isSubmitting={isLoading}
         />
       </div>
