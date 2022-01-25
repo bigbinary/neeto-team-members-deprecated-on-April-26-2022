@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Modal, Button, Typography, Toastr } from "@bigbinary/neetoui";
-import { Select } from "@bigbinary/neetoui/formik";
+import { Input, Select } from "@bigbinary/neetoui/formik";
 import { Formik, Form } from "formik";
 
 import { post, update } from "../apis";
@@ -84,15 +84,27 @@ const AddMember = ({
               <Form>
                 <Modal.Body>
                   <div className="w-full space-y-6">
-                    <MultipleEmailInput
-                      label="Emails"
-                      name="emails"
-                      value={values.emails}
-                      onChange={(emails) => setFieldValue("emails", emails)}
-                      error={errors.emails}
-                      onBlur={handleBlur}
-                      disabled={selectedMember}
-                    />
+                    {selectedMember ? (
+                      <Input
+                        label="Email(s)"
+                        size="large"
+                        name="emails"
+                        data-cy="add-member-email-text-field"
+                        value={values.emails[0].value}
+                        disabled={selectedMember}
+                      />
+                    ) : (
+                      <MultipleEmailInput
+                        label="Email(s)"
+                        name="emails"
+                        value={values.emails}
+                        onChange={(emails) => setFieldValue("emails", emails)}
+                        error={errors.emails}
+                        onBlur={handleBlur}
+                        disabled={selectedMember}
+                      />
+                    )}
+
                     <Select
                       label="Role"
                       size="large"
