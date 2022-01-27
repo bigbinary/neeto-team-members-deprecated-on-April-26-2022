@@ -102,10 +102,7 @@ export const getColumnData = ({
             <li onClick={() => handleUpdateStatus({ id, name }, active)}>
               <Typography
                 style="body2"
-                className={classnames({
-                  "neeto-ui-text-error": active,
-                  "neeto-ui-text-success": !active,
-                })}
+                className={classnames({ "neeto-ui-text-error": active })}
               >
                 {active ? "Deactivate" : "Activate"}
               </Typography>
