@@ -6,6 +6,7 @@ import { Formik, Form } from "formik";
 
 import { post, update } from "../apis";
 import { ADD_MEMBER_VALIDATION_SCHEMA } from "../constants";
+import MultipleEmailInput from "./Common/MultipleEmailInput";
 
 const AddMember = ({
   metaName,
@@ -18,7 +19,9 @@ const AddMember = ({
   fetchTeamMembers,
 }) => {
   const INITIAL_FORM_VALUES = {
-    email: selectedMember?.email || "",
+    emails: selectedMember
+      ? [{ label: selectedMember.email, value: selectedMember.email }]
+      : [],
     role: selectedMember?.role || "",
   };
   const [submitted, setSubmitted] = useState(false);
@@ -33,7 +36,7 @@ const AddMember = ({
           user: {
             first_name: "-",
             last_name: "-",
-            email: values.email,
+            emails: values.emails.map(({ value }) => value),
             invite_status: "pending",
             organization_role: values.role,
           },
@@ -60,7 +63,7 @@ const AddMember = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <Modal.Header>
-        <Typography style="h2" weight="semibold">
+        <Typography className="mb-2" style="h2" weight="semibold">
           {selectedMember ? "Edit" : "Add New"} {metaName}
         </Typography>
       </Modal.Header>
@@ -72,7 +75,7 @@ const AddMember = ({
         validateOnBlur={submitted}
         enableReinitialize
       >
-        {({ values, isSubmitting, setFieldValue }) => {
+        {({ values, isSubmitting, setFieldValue, errors, handleBlur }) => {
           const roleValue = values.role
             ? { label: values.role, value: values.role }
             : null;
@@ -80,19 +83,31 @@ const AddMember = ({
             <>
               <Form>
                 <Modal.Body>
-                  <div className="w-full">
-                    <Input
-                      label="Email"
-                      size="small"
-                      name="email"
-                      placeholder="Email"
-                      data-cy="add-member-email-text-field"
-                      className="mb-6"
-                      disabled={selectedMember}
-                    />
+                  <div className="w-full space-y-4">
+                    {selectedMember ? (
+                      <Input
+                        label="Email(s)"
+                        size="large"
+                        name="emails"
+                        data-cy="add-member-email-text-field"
+                        value={values.emails[0].value}
+                        disabled={selectedMember}
+                      />
+                    ) : (
+                      <MultipleEmailInput
+                        label="Email(s)"
+                        name="emails"
+                        value={values.emails}
+                        onChange={(emails) => setFieldValue("emails", emails)}
+                        error={errors.emails}
+                        onBlur={handleBlur}
+                        disabled={selectedMember}
+                      />
+                    )}
+
                     <Select
                       label="Role"
-                      size="small"
+                      size="large"
                       name="role"
                       onChange={(role) => setFieldValue("role", role.value)}
                       value={roleValue}

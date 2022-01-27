@@ -1,11 +1,17 @@
 import * as yup from "yup";
 
 export const ADD_MEMBER_VALIDATION_SCHEMA = yup.object().shape({
-  email: yup
-    .string()
-    .trim()
-    .required("Email is required")
-    .email("Please enter valid email"),
+  emails: yup
+    .array()
+    .min(1, "Atleast one email is required")
+    .of(
+      yup.object().shape({
+        label: yup.string().email("Must be a valid email"),
+        value: yup.string().email("Must be a valid email"),
+      })
+    )
+    .required("Emails are required")
+    .nullable(),
   role: yup.string().required("Please select a role"),
 });
 
