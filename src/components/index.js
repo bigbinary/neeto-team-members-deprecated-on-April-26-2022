@@ -30,7 +30,7 @@ import {
 } from "../constants";
 
 const tableWrapperStyle = {
-  height: `calc(100vh - 150px)`
+  height: `calc(100vh - 150px)`,
 };
 
 const TeamMembers = ({
@@ -63,34 +63,30 @@ const TeamMembers = ({
     searchTerm
   );
 
-  const HeaderActionBlock = (metaName) => {
-    return (
-      <div className="flex space-x-3">
-        <Input
-          className="w-72"
-          placeholder={`Search ${metaName}s`}
-          prefix={<Search />}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <Button
-          icon={Plus}
-          size="large"
-          label={`Add New ${metaName}`}
-          onClick={() => setIsModalOpen(true)}
-        />
-      </div>
-    );
-  };
+  const HeaderActionBlock = (metaName) => (
+    <div className="flex space-x-3">
+      <Input
+        className="w-72"
+        placeholder={`Search ${metaName}s`}
+        prefix={<Search />}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <Button
+        icon={Plus}
+        size="large"
+        label={`Add New ${metaName}`}
+        onClick={() => setIsModalOpen(true)}
+      />
+    </div>
+  );
 
-  const SubHeaderLeftActionBlock = () => {
-    return (
-      <Typography style="h4" component="h4">
-        {filteredMembers.length}{" "}
-        {filteredMembers.length === 1 ? metaName : `${metaName}s`}
-      </Typography>
-    );
-  };
+  const SubHeaderLeftActionBlock = () => (
+    <Typography style="h4" component="h4">
+      {filteredMembers.length}{" "}
+      {filteredMembers.length === 1 ? metaName : `${metaName}s`}
+    </Typography>
+  );
 
   const fetchTeamMembers = async () => {
     try {
@@ -208,7 +204,10 @@ const TeamMembers = ({
           {filteredMembers.length ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
-              <div className="neeto-team-members__table-wrapper" style={tableWrapperStyle}>
+              <div
+                className="neeto-team-members__table-wrapper"
+                style={tableWrapperStyle}
+              >
                 <Table
                   rowData={filteredMembers}
                   columnData={getColumnData({

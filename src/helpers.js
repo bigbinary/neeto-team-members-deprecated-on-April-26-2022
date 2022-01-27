@@ -21,7 +21,7 @@ export const getFilteredMembers = (teamMembers, filterValue, searchTerm) => {
   if (searchTerm)
     filterMembers = filterMembers.filter((members) =>
       (members.first_name + members.last_name + members.email).includes(
-        searchTerm
+        searchTerm.trim()
       )
     );
   return filterMembers;
