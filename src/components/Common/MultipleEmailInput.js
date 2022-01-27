@@ -113,12 +113,6 @@ const MultipleEmailInput = ({
             {error}
           </Typography>
         )}
-
-        {!!value?.length && !error?.length && (
-          <Typography style="body2" className="float-right mt-2">{`${
-            value.length
-          } ${value.length > 1 ? "Emails" : "Email"}`}</Typography>
-        )}
       </div>
     </div>
   );

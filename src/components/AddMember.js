@@ -63,7 +63,7 @@ const AddMember = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <Modal.Header>
-        <Typography style="h2" weight="semibold">
+        <Typography className="mb-2" style="h2" weight="semibold">
           {selectedMember ? "Edit" : "Add New"} {metaName}
         </Typography>
       </Modal.Header>
@@ -83,7 +83,7 @@ const AddMember = ({
             <>
               <Form>
                 <Modal.Body>
-                  <div className="w-full space-y-6">
+                  <div className="w-full space-y-4">
                     {selectedMember ? (
                       <Input
                         label="Email(s)"
