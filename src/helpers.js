@@ -99,7 +99,7 @@ export const getColumnData = ({
             <li onClick={() => handleUpdateRole({ id, email, role })}>
               <Typography style="body2">Edit</Typography>
             </li>
-            <li onClick={() => handleUpdateStatus({ id, name }, active)}>
+            <li onClick={() => handleUpdateStatus({ id, name, active })}>
               <Typography
                 style="body2"
                 className={classnames({ "neeto-ui-text-error": active })}

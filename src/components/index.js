@@ -125,12 +125,12 @@ const TeamMembers = ({
   const handleUpdateMember = async () => {
     try {
       setIsLoading(true);
-      const payload = { active: !selectedMember.status };
+      const payload = { active: !selectedMember.active };
       await update(getUpdateMemberEndpoint(selectedMember.id), payload);
       fetchTeamMembers();
       Toastr.success(
         `${
-          selectedMember.status ? "Deactivated" : "Activated"
+          selectedMember.active ? "Deactivated" : "Activated"
         } ${metaName} successfully`
       );
     } catch (err) {
@@ -141,8 +141,8 @@ const TeamMembers = ({
     }
   };
 
-  const handleUpdateStatus = (user, status) => {
-    setSelectedMember({ ...user, status });
+  const handleUpdateStatus = (user) => {
+    setSelectedMember(user);
     setIsAlertOpen(true);
   };
 
@@ -232,10 +232,10 @@ const TeamMembers = ({
         <Alert
           isOpen={isAlertOpen}
           title={`${
-            selectedMember?.status ? "Deactivate" : "Activate"
+            selectedMember?.active ? "Deactivate" : "Activate"
           } ${metaName}`}
           message={`You are ${
-            selectedMember?.status ? "Deactivating" : "Activating"
+            selectedMember?.active ? "Deactivating" : "Activating"
           } ${selectedMember?.name}. Are you sure you want to continue?`}
           onClose={handleAlertClose}
           onSubmit={handleUpdateMember}
