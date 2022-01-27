@@ -18,7 +18,7 @@ export const ADD_MEMBER_VALIDATION_SCHEMA = yup.object().shape({
 export const MEMBER_FILTER = {
   ALL: { label: "All", value: "ALL" },
   ACTIVE: { label: "Active", value: "ACTIVE" },
-  INACTIVE: { label: "Inactive", value: "INACTIVE" },
+  INACTIVE: { label: "Deactivated", value: "INACTIVE" },
 };
 
 export const DEFAULT_PAGE_SIZE = 15;

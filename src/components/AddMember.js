@@ -86,6 +86,7 @@ const AddMember = ({
                   <div className="w-full space-y-4">
                     {selectedMember ? (
                       <Input
+                        required
                         label="Email(s)"
                         size="large"
                         name="emails"
@@ -95,7 +96,7 @@ const AddMember = ({
                       />
                     ) : (
                       <MultipleEmailInput
-                        label="Email(s)"
+                        label="Email(s)*"
                         name="emails"
                         value={values.emails}
                         onChange={(emails) => setFieldValue("emails", emails)}
@@ -106,6 +107,7 @@ const AddMember = ({
                     )}
 
                     <Select
+                      required
                       label="Role"
                       size="large"
                       name="role"
