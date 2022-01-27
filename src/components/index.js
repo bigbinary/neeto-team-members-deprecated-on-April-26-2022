@@ -122,28 +122,17 @@ const TeamMembers = ({
   const getUpdateMemberEndpoint = (userId) =>
     `${updateMemberEndpoint}/${userId}`;
 
-  const deactivateMember = async (userId) => {
+  const handleUpdateMember = async () => {
     try {
       setIsLoading(true);
-      const payload = { active: false };
-      await update(getUpdateMemberEndpoint(userId), payload);
+      const payload = { active: !selectedMember.status };
+      await update(getUpdateMemberEndpoint(selectedMember.id), payload);
       fetchTeamMembers();
-      Toastr.success(`Deactivated ${metaName} successfully`);
-    } catch (err) {
-      Toastr.error(err);
-    } finally {
-      handleAlertClose();
-      setIsLoading(false);
-    }
-  };
-
-  const activateMember = async (userId) => {
-    try {
-      setIsLoading(true);
-      const payload = { active: true };
-      await update(getUpdateMemberEndpoint(userId), payload);
-      fetchTeamMembers();
-      Toastr.success(`Activated ${metaName} successfully`);
+      Toastr.success(
+        `${
+          selectedMember.status ? "Deactivated" : "Activated"
+        } ${metaName} successfully`
+      );
     } catch (err) {
       Toastr.error(err);
     } finally {
@@ -153,11 +142,7 @@ const TeamMembers = ({
   };
 
   const handleUpdateStatus = (user, status) => {
-    const member = {
-      ...user,
-      status,
-    };
-    setSelectedMember(member);
+    setSelectedMember({ ...user, status });
     setIsAlertOpen(true);
   };
 
@@ -209,7 +194,7 @@ const TeamMembers = ({
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
               <div
-                className="neeto-team-members__table-wrapper"
+                className="neeto-team-members__table-wrapper overflow-auto w-full"
                 style={tableWrapperStyle}
               >
                 <Table
@@ -253,11 +238,7 @@ const TeamMembers = ({
             selectedMember?.status ? "Deactivating" : "Activating"
           } ${selectedMember?.name}. Are you sure you want to continue?`}
           onClose={handleAlertClose}
-          onSubmit={() =>
-            selectedMember.status
-              ? deactivateMember(selectedMember?.id)
-              : activateMember(selectedMember?.id)
-          }
+          onSubmit={handleUpdateMember}
           isSubmitting={isLoading}
         />
       </div>
