@@ -86,7 +86,8 @@ const AddMember = ({
                   <div className="w-full space-y-4">
                     {selectedMember ? (
                       <Input
-                        label="Email(s)*"
+                        required
+                        label="Email(s)"
                         size="large"
                         name="emails"
                         data-cy="add-member-email-text-field"
@@ -106,7 +107,8 @@ const AddMember = ({
                     )}
 
                     <Select
-                      label="Role*"
+                      required
+                      label="Role"
                       size="large"
                       name="role"
                       onChange={(role) => setFieldValue("role", role.value)}
