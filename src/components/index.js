@@ -30,7 +30,7 @@ import {
 } from "../constants";
 
 const tableWrapperStyle = {
-  height: `calc(100vh - 150px)`,
+  height: "calc(100vh - 150px)",
 };
 
 const TeamMembers = ({
@@ -114,47 +114,31 @@ const TeamMembers = ({
     }
   };
 
-  const handleDeactivateAlertClose = () => {
-    setIsAlertOpen(false);
-    setSelectedMember(null);
-  };
-
   const getUpdateMemberEndpoint = (userId) =>
     `${updateMemberEndpoint}/${userId}`;
 
-  const deactivateMember = async (userId) => {
+  const handleUpdateMember = async () => {
     try {
       setIsLoading(true);
-      const payload = { active: false };
-      await update(getUpdateMemberEndpoint(userId), payload);
+      const payload = { active: !selectedMember.active };
+      await update(getUpdateMemberEndpoint(selectedMember.id), payload);
       fetchTeamMembers();
-      Toastr.success(`Deactivated ${metaName} successfully`);
+      Toastr.success(
+        `${
+          selectedMember.active ? "Deactivated" : "Activated"
+        } ${metaName} successfully`
+      );
     } catch (err) {
       Toastr.error(err);
     } finally {
-      handleDeactivateAlertClose();
+      handleAlertClose();
       setIsLoading(false);
     }
   };
 
-  const activateMember = async (userId) => {
-    try {
-      const payload = { active: true };
-      await update(getUpdateMemberEndpoint(userId), payload);
-      fetchTeamMembers();
-      Toastr.success(`Activated ${metaName} successfully`);
-    } catch (err) {
-      Toastr.error(err);
-    }
-  };
-
-  const handleUpdateStatus = (user, status) => {
-    if (status) {
-      setSelectedMember(user);
-      setIsAlertOpen(true);
-    } else {
-      activateMember(user.id);
-    }
+  const handleUpdateStatus = (user) => {
+    setSelectedMember(user);
+    setIsAlertOpen(true);
   };
 
   const handleUpdateRole = (user) => {
@@ -162,7 +146,12 @@ const TeamMembers = ({
     setIsModalOpen(true);
   };
 
-  const handleClose = () => {
+  const handleAlertClose = () => {
+    setIsAlertOpen(false);
+    setSelectedMember(null);
+  };
+
+  const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedMember(null);
   };
@@ -205,7 +194,7 @@ const TeamMembers = ({
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
               <div
-                className="neeto-team-members__table-wrapper"
+                className="neeto-team-members__table-wrapper overflow-auto w-full"
                 style={tableWrapperStyle}
               >
                 <Table
@@ -233,7 +222,7 @@ const TeamMembers = ({
         <AddMember
           metaName={metaName}
           isOpen={isModalOpen}
-          onClose={handleClose}
+          onClose={handleModalClose}
           roles={roles}
           selectedMember={selectedMember}
           addMemberEndpoint={addMemberEndpoint}
@@ -242,10 +231,14 @@ const TeamMembers = ({
         />
         <Alert
           isOpen={isAlertOpen}
-          title={`Deactivate ${metaName}`}
-          message={`You are deactivating ${selectedMember?.name}. Are you sure you want to continue?`}
-          onClose={handleDeactivateAlertClose}
-          onSubmit={() => deactivateMember(selectedMember?.id)}
+          title={`${
+            selectedMember?.active ? "Deactivate" : "Activate"
+          } ${metaName}`}
+          message={`You are ${
+            selectedMember?.active ? "Deactivating" : "Activating"
+          } ${selectedMember?.name}. Are you sure you want to continue?`}
+          onClose={handleAlertClose}
+          onSubmit={handleUpdateMember}
           isSubmitting={isLoading}
         />
       </div>
