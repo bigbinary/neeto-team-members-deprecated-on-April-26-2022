@@ -114,11 +114,6 @@ const TeamMembers = ({
     }
   };
 
-  const handleAlertClose = () => {
-    setIsAlertOpen(false);
-    setSelectedMember(null);
-  };
-
   const getUpdateMemberEndpoint = (userId) =>
     `${updateMemberEndpoint}/${userId}`;
 
@@ -151,7 +146,12 @@ const TeamMembers = ({
     setIsModalOpen(true);
   };
 
-  const handleClose = () => {
+  const handleAlertClose = () => {
+    setIsAlertOpen(false);
+    setSelectedMember(null);
+  };
+
+  const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedMember(null);
   };
@@ -222,7 +222,7 @@ const TeamMembers = ({
         <AddMember
           metaName={metaName}
           isOpen={isModalOpen}
-          onClose={handleClose}
+          onClose={handleModalClose}
           roles={roles}
           selectedMember={selectedMember}
           addMemberEndpoint={addMemberEndpoint}
