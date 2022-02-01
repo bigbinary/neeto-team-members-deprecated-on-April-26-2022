@@ -198,6 +198,7 @@ const TeamMembers = ({
                 style={tableWrapperStyle}
               >
                 <Table
+                  className="cursor-default"
                   rowData={filteredMembers}
                   columnData={getColumnData({
                     additionalColumns,
