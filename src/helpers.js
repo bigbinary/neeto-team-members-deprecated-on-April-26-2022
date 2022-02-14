@@ -18,12 +18,14 @@ export const getFilteredMembers = (teamMembers, filterValue, searchTerm) => {
     default:
       filterMembers = teamMembers;
   }
-  if (searchTerm)
-    filterMembers = filterMembers.filter((members) =>
-      (members.first_name + members.last_name + members.email).includes(
-        searchTerm.trim()
-      )
+  if (searchTerm) {
+    filterMembers = filterMembers.filter(
+      ({ first_name: firstName, last_name: lastName, email }) =>
+        `${firstName.toLowerCase()} ${lastName.toLowerCase()} ${email.toLowerCase()}`.includes(
+          searchTerm.trim().toLowerCase()
+        )
     );
+  }
   return filterMembers;
 };
 
