@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { Plus, Search } from "@bigbinary/neeto-icons";
+import { Plus } from "@bigbinary/neeto-icons";
 import { Container, Header, SubHeader } from "@bigbinary/neetoui/layouts";
 import {
-  Input,
   Alert,
   Table,
   Toastr,
@@ -63,22 +62,19 @@ const TeamMembers = ({
     searchTerm
   );
 
+  const searchProps = {
+    placeholder: `Search ${metaName}s`,
+    value: searchTerm,
+    onChange: (e) => setSearchTerm(e.target.value),
+  };
+
   const HeaderActionBlock = (metaName) => (
-    <div className="flex space-x-3">
-      <Input
-        className="w-72"
-        placeholder={`Search ${metaName}s`}
-        prefix={<Search />}
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <Button
-        icon={Plus}
-        size="large"
-        label={`Add New ${metaName}`}
-        onClick={() => setIsModalOpen(true)}
-      />
-    </div>
+    <Button
+      icon={Plus}
+      size="large"
+      label={`Add New ${metaName}`}
+      onClick={() => setIsModalOpen(true)}
+    />
   );
 
   const SubHeaderLeftActionBlock = () => (
@@ -188,6 +184,7 @@ const TeamMembers = ({
           <Header
             title={`${MEMBER_FILTER[selectedMemberStatusFilter].label} ${metaName}s`}
             menuBarToggle={() => setIsMenuOpen(!isMenuOpen)}
+            searchProps={searchProps}
             actionBlock={HeaderActionBlock(metaName)}
           />
           {filteredMembers.length ? (
