@@ -63,6 +63,8 @@ const TeamMembers = ({
     searchTerm
   );
 
+  const filteredMembersCount = getMembersCount(filteredMembers);
+
   const searchProps = {
     placeholder: `Search ${metaName}s`,
     value: searchTerm,
@@ -80,8 +82,8 @@ const TeamMembers = ({
 
   const SubHeaderLeftActionBlock = () => (
     <Typography style="h4" component="h4">
-      {`${getMembersCount(filteredMembers)} ${
-        getMembersCount(filteredMembers) === 1
+      {`${filteredMembersCount} ${
+        filteredMembersCount === 1
           ? metaName
           : `${metaName}s`
       }`}
@@ -191,7 +193,7 @@ const TeamMembers = ({
             searchProps={searchProps}
             actionBlock={HeaderActionBlock(metaName)}
           />
-          {getMembersCount(filteredMembers) ? (
+          {filteredMembersCount ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
               <div
