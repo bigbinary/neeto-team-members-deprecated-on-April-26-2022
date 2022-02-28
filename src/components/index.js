@@ -11,6 +11,7 @@ import {
   Typography,
   PageLoader,
 } from "@bigbinary/neetoui";
+import { isEmpty } from "ramda";
 
 import MenuBar from "./Menu";
 import AddMember from "./AddMember";
@@ -79,8 +80,8 @@ const TeamMembers = ({
 
   const SubHeaderLeftActionBlock = () => (
     <Typography style="h4" component="h4">
-      {filteredMembers.length}{" "}
-      {filteredMembers.length === 1 ? metaName : `${metaName}s`}
+      {!isEmpty(filteredMembers) && filteredMembers?.length}{" "}
+      {!isEmpty(filteredMembers) && filteredMembers?.length === 1 ? metaName : `${metaName}s`}
     </Typography>
   );
 
@@ -187,7 +188,7 @@ const TeamMembers = ({
             searchProps={searchProps}
             actionBlock={HeaderActionBlock(metaName)}
           />
-          {filteredMembers.length ? (
+          {!isEmpty(filteredMembers) && filteredMembers?.length ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
               <div
