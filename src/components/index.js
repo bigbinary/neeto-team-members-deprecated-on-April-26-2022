@@ -21,7 +21,7 @@ import {
   getFilteredMembers,
   getColumnData,
   getMemberFilterCounts,
-  getFilteredMembersCount,
+  getMembersCount,
 } from "../helpers";
 import {
   MEMBER_FILTER,
@@ -80,8 +80,8 @@ const TeamMembers = ({
 
   const SubHeaderLeftActionBlock = () => (
     <Typography style="h4" component="h4">
-      {`${getFilteredMembersCount(filteredMembers)} ${
-        getFilteredMembersCount(filteredMembers) === 1
+      {`${getMembersCount(filteredMembers)} ${
+        getMembersCount(filteredMembers) === 1
           ? metaName
           : `${metaName}s`
       }`}
@@ -191,7 +191,7 @@ const TeamMembers = ({
             searchProps={searchProps}
             actionBlock={HeaderActionBlock(metaName)}
           />
-          {getFilteredMembersCount(filteredMembers) ? (
+          {getMembersCount(filteredMembers) ? (
             <>
               <SubHeader leftActionBlock={<SubHeaderLeftActionBlock />} />
               <div

@@ -118,5 +118,5 @@ export const getColumnData = ({
   ];
 };
 
-export const getFilteredMembersCount = members =>
+export const getMembersCount = members =>
   isEmpty(members) ? 0 : members.length;
