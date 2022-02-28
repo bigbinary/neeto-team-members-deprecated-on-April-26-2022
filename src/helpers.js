@@ -1,5 +1,6 @@
 import React from "react";
 
+import { isEmpty } from "ramda";
 import { Avatar, Dropdown, Typography, Tag } from "@bigbinary/neetoui";
 import { MenuHorizontal } from "@bigbinary/neeto-icons";
 import classnames from "classnames";
@@ -116,3 +117,6 @@ export const getColumnData = ({
     },
   ];
 };
+
+export const getMembersCount = members =>
+  isEmpty(members) ? 0 : members.length;
